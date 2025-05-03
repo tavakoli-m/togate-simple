@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Dashboard\GatewayController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->name('auth.')->group(function(){
@@ -15,6 +16,8 @@ Route::prefix('auth')->name('auth.')->group(function(){
 
 Route::prefix('dashboard')->name('dashboard.')->group(function(){
     Route::view('/','dashboard.index')->name('index');
+
+    Route::resource('gateway',GatewayController::class);
 });
 
 Route::view('/','welcome')->name('index');

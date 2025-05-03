@@ -26,6 +26,13 @@ class Gateway extends Model
         'settlement_address',
     ];
 
+    protected function casts() : array
+    {
+        return [
+            'allowed_ips' => 'array'
+        ];
+    }
+
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -5,6 +5,10 @@
                 <i class="fas fa-home"></i>
                 <span>خانه</span>
             </a>
+            <a href="{{ route('dashboard.gateway.index') }}" class="sidebar-link">
+                <i class="fas fa-dollar-sign"></i>
+                <span>درگاه ها</span>
+            </a>
         </section>
     </section>
 </aside>
