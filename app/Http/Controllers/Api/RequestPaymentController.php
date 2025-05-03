@@ -56,7 +56,7 @@ class RequestPaymentController extends Controller
                 $payment = Payment::create([
                     'gateway_id' => $gateWay->id,
                     'token' => str()->random(65),
-                    'fee_method' => 0,
+                    'fee_method' => 2,
                     'amount' => (float)$payment_amount,
                     'fee_amount' => $payment_fee,
                     'expired_at' => now()->addMinutes(15),
