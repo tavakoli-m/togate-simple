@@ -19,7 +19,7 @@
         <a href="{{ route('auth.register.form') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">ثبت‌نام</a>
         @endguest
         @auth
-        <a href="#register" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">حساب کاربری</a>
+        <a href="{{ route('dashboard.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">حساب کاربری</a>
         @endauth
       </nav>
     </div>

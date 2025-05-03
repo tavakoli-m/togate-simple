@@ -13,4 +13,8 @@ Route::prefix('auth')->name('auth.')->group(function(){
     Route::post('login',[LoginController::class,'login'])->name('login');
 });
 
+Route::prefix('dashboard')->name('dashboard.')->group(function(){
+    Route::view('/','dashboard.index')->name('index');
+});
+
 Route::view('/','welcome')->name('index');
