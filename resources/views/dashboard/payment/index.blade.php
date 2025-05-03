@@ -42,8 +42,8 @@
                             <td>{{ $payment->token }}</td>
                             <td>{{ $payment->gateway->name }}</td>
                             <td>{{ $payment->fee_method === 1 ? 'پرداخت کننده' : 'پذیرنده' }}</td>
-                            <td>{{ convertEnglishToPersian(round($payment->amount)) }} trx</td>
-                            <td>{{ convertEnglishToPersian(round($payment->fee_amount)) }} trx</td>
+                            <td>{{ convertEnglishToPersian(($payment->amount)) }} trx</td>
+                            <td>{{ convertEnglishToPersian(($payment->fee_amount)) }} trx</td>
                             <td>{{ $payment->description ?? '-' }}</td>
                             <td>
                                 @switch($payment->status)
