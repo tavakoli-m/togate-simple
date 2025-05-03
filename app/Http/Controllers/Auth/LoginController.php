@@ -16,7 +16,9 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
-        if(!Auth::attempt($request->validated()))
+        $inputs = $request->validated();
+        $inputs['status'] = 2;
+        if(!Auth::attempt($inputs))
         {
             return back()->with('email','ایمیل یا رمز عبور اشتباه میباشد');
         }
