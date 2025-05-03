@@ -25,7 +25,7 @@ class StoreGatewayRequest extends FormRequest
             'name' => ['required','min:1','max:255'],
             'allowed_ips' => ['nullable'],
             'min_settlement' => ['required'],
-            'fee_method' => ['required','in:0,1'],
+            'fee_method' => ['required','in:2,1'],
             'settlement_address' => ['required']
         ];
     }

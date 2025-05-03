@@ -31,7 +31,6 @@
                             <th>روش پرداخت کارمزد</th>
                             <th>مبلغ</th>
                             <th>کارمزد</th>
-                            <th>تاریخ انقضا</th>
                             <th>توضیحات</th>
                             <th>وضعیت</th>
                         </tr>
@@ -43,9 +42,8 @@
                             <td>{{ $payment->token }}</td>
                             <td>{{ $payment->gateway->name }}</td>
                             <td>{{ $payment->fee_method === 1 ? 'پرداخت کننده' : 'پذیرنده' }}</td>
-                            <td>{{ $payment->amount }}</td>
-                            <td>{{ $payment->fee_amount }}</td>
-                            <td>{{ $payment->expired_at }}</td>
+                            <td>{{ convertEnglishToPersian(round($payment->amount)) }} trx</td>
+                            <td>{{ convertEnglishToPersian(round($payment->fee_amount)) }} trx</td>
                             <td>{{ $payment->description ?? '-' }}</td>
                             <td>
                                 @switch($payment->status)

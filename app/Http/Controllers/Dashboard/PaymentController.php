@@ -15,7 +15,7 @@ class PaymentController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $myGateWays = Gateway::select('id')->where('user_id',Auth::id())->get()->toArray();
+        $myGateWays = Gateway::select('id')->where('user_id',Auth::id())->where('status',1)->get()->toArray();
 
         $payments = Payment::whereIn('gateway_id',$myGateWays)->paginate(50);
 
