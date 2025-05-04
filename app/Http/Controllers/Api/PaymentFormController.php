@@ -69,4 +69,16 @@ class PaymentFormController extends Controller
             'success' => false
         ]);
     }
+
+    public function status(Payment $payment){
+        if($payment->status == 4 || $payment->status == 2){
+            return response()->json([
+                'status' => true
+            ]);
+        }
+
+        return response()->json([
+            'status' => false
+        ]);
+    }
 }
