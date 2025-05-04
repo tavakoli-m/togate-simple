@@ -7,4 +7,4 @@
 </p>
 
 
-<a href="{{ route('auth.register.verify',$user->email) }}"></a>
+<a href="{{ route('auth.register.verify',$user->email) }}">تایید حساب کاربری</a>

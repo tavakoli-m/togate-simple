@@ -7,6 +7,7 @@ use App\Http\Requests\Api\RequestPaymentRequest;
 use App\Jobs\MonitorPendingPayment;
 use App\Models\Payment\Gateway;
 use App\Models\Payment\Payment;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -23,9 +24,15 @@ class RequestPaymentController extends Controller
 
         if($gateWay && $gateWay->status === 1 && $gateWay->user->status === 2)
         {
-            $wallet = Http::post('http://localhost:3000/create-wallet');
+            try{
+                $wallet = Http::post('http://localhost:3000/create-wallet');
 
-            $trxPrice = Http::get('https://api.wallex.ir/v1/markets')->json('result')['symbols']['TRXTMN']['stats']['lastPrice'];
+                $trxPrice = Http::get('https://api.wallex.ir/v1/markets')->json('result')['symbols']['TRXTMN']['stats']['lastPrice'];
+            }catch(Exception $e){
+                return response()->json([
+                    'msg' => 'server is busy, try agin !!'
+                ],500);
+            }
 
             $amount = $request->input('amount');
 

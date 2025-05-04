@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" class="font-iran-sans">
 <head>
   <meta charset="UTF-8">
   <title>پرداخت با ترون</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  @Vite(['resources/fonts/iran-sans/fontiran.css', 'resources/css/app.css'])
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
+<body class="bg-gray-100 flex items-center justify-center h-screen font-iran-sans">
   <div class="bg-white p-6 rounded-2xl shadow-lg text-center max-w-md w-full">
     <h2 class="text-xl font-bold mb-4">آدرس کیف پول ترون (TRC20)</h2>
     <h2 class="text-xl font-bold mb-4">تعداد : {{ convertEnglishToPersian($payment->amount) }}</h2>

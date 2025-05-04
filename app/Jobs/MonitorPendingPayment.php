@@ -26,7 +26,7 @@ class MonitorPendingPayment implements ShouldQueue
     public function handle(): void
     {
         if($this->payment->expired_at > now()){
-            $this->release(now()->addMinutes(15));
+            $this->release(60);
             return;
         }
 
