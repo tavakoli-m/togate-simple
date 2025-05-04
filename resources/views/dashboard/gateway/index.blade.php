@@ -43,13 +43,13 @@
                                 @if ($gateway->allowed_ips)
                                  @foreach ($gateway->allowed_ips as $ip)
                                      <p>{{ convertEnglishToPersian($ip)}}</p>
-                                 @endforeach   
+                                 @endforeach
                                 @else
                                 *
                                 @endif
                             </td>
-                            <td>{{ convertEnglishToPersian(round($gateway->min_settlement)) }} trx</td>
-                            <td>{{ convertEnglishToPersian(round($gateway->current_balance)) }} trx</td>
+                            <td>{{ convertEnglishToPersian(($gateway->min_settlement)) }} trx</td>
+                            <td>{{ convertEnglishToPersian(($gateway->current_balance)) }} trx</td>
                             <td>{{ $gateway->fee_method === 1 ? 'پرداخت کننده' : 'پذیرنده' }}</td>
                             <td>
                                 <form action="{{ route('dashboard.gateway.destroy', $gateway) }}" id="deleteForm" method="POST" style="text-align: left">

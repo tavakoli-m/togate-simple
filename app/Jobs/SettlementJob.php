@@ -42,39 +42,79 @@ class SettlementJob implements ShouldQueue
                     'status' => 2
                 ]);
 
-                $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron',[
-                    'privateKey' => $payment->wallet_key,
-                    'toAddress' => $gateway->settlement_address,
-                    'amount' => $payment->amount,
-                    'senderAddress' => $payment->wallet_address
-                ]);
+                // Payer
+                if($payment->fee_method === 1)
+                {
+                    $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron',[
+                        'privateKey' => $payment->wallet_key,
+                        'toAddress' => $gateway->settlement_address,
+                        'amount' => (float)$payment->amount - (float)$payment->fee_amount,
+                        'senderAddress' => $payment->wallet_address
+                    ]);
 
-                $send_to_site = Http::post('http://127.0.0.1:3000/send-tron',[
-                    'privateKey' => $payment->wallet_key,
-                    'toAddress' => $site_wallet,
-                    'amount' => $payment->fee_amount,
-                    'senderAddress' => $payment->wallet_address
-                ]);
+                    $send_to_site = Http::post('http://127.0.0.1:3000/send-tron',[
+                        'privateKey' => $payment->wallet_key,
+                        'toAddress' => $site_wallet,
+                        'amount' => $payment->fee_amount,
+                        'senderAddress' => $payment->wallet_address
+                    ]);
 
-                $gateway->update([
-                    'fee_amount' => (float)$gateway->fee_amount - (float)$payment->fee_amount,
-                    'current_balance' => (float)$gateway->current_balance - ((float)$payment->amount - $payment->fee_amount),
-                ]);
+                    $gateway->update([
+                        'fee_amount' => (float)$gateway->fee_amount - (float)$payment->fee_amount,
+                        'current_balance' => (float)$gateway->current_balance - ((float)$payment->amount - $payment->fee_amount),
+                    ]);
 
-                $send_to_customer_settelement = Settlement::create([
-                   'settlement_address' => $gateway->settlement_address,
-                   'gateway_id' => $gateway->id,
-                   'amount' => $payment->amount,
-                   'settlement_transaction_id' => $send_to_customer->json('tx'),
-                   "fee" => $payment->fee_amount,
-                   "fee_transaction_id" => $send_to_site->json('tx')
-                ]);
+                    $send_to_customer_settelement = Settlement::create([
+                        'settlement_address' => $gateway->settlement_address,
+                        'gateway_id' => $gateway->id,
+                        'amount' => $payment->amount,
+                        'settlement_transaction_id' => $send_to_customer->json('tx'),
+                        "fee" => $payment->fee_amount,
+                        "fee_transaction_id" => $send_to_site->json('tx')
+                    ]);
+                }
+                // Ricever
+                else{
+                    $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron',[
+                        'privateKey' => $payment->wallet_key,
+                        'toAddress' => $gateway->settlement_address,
+                        'amount' => (float)$payment->amount - (float)$payment->fee_amount,
+                        'senderAddress' => $payment->wallet_address
+                    ]);
+
+                    $send_to_site = Http::post('http://127.0.0.1:3000/send-tron',[
+                        'privateKey' => $payment->wallet_key,
+                        'toAddress' => $site_wallet,
+                        'amount' => $payment->fee_amount,
+                        'senderAddress' => $payment->wallet_address
+                    ]);
+
+                    $gateway->update([
+                        'fee_amount' => (float)$gateway->fee_amount - (float)$payment->fee_amount,
+                        'current_balance' => (float)$gateway->current_balance - ((float)$payment->amount - $payment->fee_amount),
+                    ]);
+
+                    $send_to_customer_settelement = Settlement::create([
+                        'settlement_address' => $gateway->settlement_address,
+                        'gateway_id' => $gateway->id,
+                        'amount' => $payment->amount,
+                        'settlement_transaction_id' => $send_to_customer->json('tx'),
+                        "fee" => $payment->fee_amount,
+                        "fee_transaction_id" => $send_to_site->json('tx')
+                    ]);
+                }
+
+
+
+
+
+
 
                 DB::commit();
 
             }
             catch(Exception $e){
-               DB::rollBack(); 
+               DB::rollBack();
             }
         }
     }
