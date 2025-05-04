@@ -11,10 +11,42 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+
 class RequestPaymentController extends Controller
 {
     /**
-     * Handle the incoming request.
+     * @OA\Post(
+     *     path="/api/request.json",
+     *     summary="Request Payment",
+     *          @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="api_key",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="amount",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="callback_url",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string",
+     *                  )
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *          )
+     *      )
+     * )
      */
     public function __invoke(RequestPaymentRequest $request)
     {

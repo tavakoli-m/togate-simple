@@ -8,8 +8,32 @@ use App\Models\Payment\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+/**
+ * @OA\Info(
+ *     version="1.0",
+ *     title="ToGate Api Doc",
+ * )
+ * @OA\PathItem(path="/api")
+ */
 class PaymentFormController extends Controller
 {
+    /**
+     * @OA\Get(
+     *     path="/api/start.json/{token}",
+     *     summary="start payment",
+     *     @OA\Parameter(
+     *         description="Parameter with mutliple examples",
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * )
+     */
     public function start(Payment $payment)
     {
         if($payment->expired_at < now() || $payment->status !== 1){
@@ -70,6 +94,23 @@ class PaymentFormController extends Controller
         ]);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/status.json/{token}",
+     *     summary="check payment",
+     *     @OA\Parameter(
+     *         description="Parameter with mutliple examples",
+     *         in="path",
+     *         name="token",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="OK"
+     *     )
+     * )
+     */
     public function status(Payment $payment){
         if($payment->status == 4 || $payment->status == 2){
             return response()->json([

@@ -1,0 +1,88 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "ToGate Api Doc",
+        "version": "1.0"
+    },
+    "paths": {
+        "/api": {},
+        "/api/start.json/{token}": {
+            "get": {
+                "summary": "start payment",
+                "operationId": "83dde432ef825c56b9cacb0ba96014b9",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/status.json/{token}": {
+            "get": {
+                "summary": "check payment",
+                "operationId": "4ed45501fde2eb006524609b259f562c",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "path",
+                        "description": "Parameter with mutliple examples",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/request.json": {
+            "post": {
+                "summary": "Request Payment",
+                "operationId": "a2acab4e45c3a6a7d54608631f3b4fef",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "api_key": {
+                                        "type": "string"
+                                    },
+                                    "amount": {
+                                        "type": "string"
+                                    },
+                                    "callback_url": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    }
+}
