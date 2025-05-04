@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\Gateway\StoreGatewayRequest;
 use App\Http\Requests\Dashboard\Gateway\UpdateGatewayRequest;
+use App\Jobs\SettlementJob;
 use App\Mail\SendGatewayApiKeyMail;
 use App\Models\Payment\Gateway;
 use Illuminate\Http\Request;
@@ -79,6 +80,10 @@ class GatewayController extends Controller
         $inputs['allowed_ips'] = explode(' ',$inputs['allowed_ips'] ?? '');
 
         $gateway->update($inputs);
+
+        if($gateway->current_balance >= $gateway->min_settlement){
+            SettlementJob::dispatch($gateway);
+        }
 
         return to_route('dashboard.gateway.index')->with('swal-success','درگاه با موفقیت ویرایش شد');
 

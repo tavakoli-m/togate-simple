@@ -38,7 +38,7 @@ class RequestPaymentController extends Controller
 
             $payment_amount =  $amount / $trxPrice;
             
-            $fee = 0.01;
+            $fee = 0.2;
 
             $payment_fee = $payment_amount * $fee;
 

@@ -42,4 +42,9 @@ class Gateway extends Model
     {
         return $this->hasMany(Settlement::class);
     }
+    public function payments() : HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
 }

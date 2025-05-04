@@ -55,6 +55,10 @@ class PaymentFormController extends Controller
                 ]);
             }
 
+            if($gateway->current_balance >= $gateway->min_settlement){
+                SettlementJob::dispatch($gateway);
+            }
+
             return response()->json([
                 'success' => true,
                 'call_back_url' => $payment->callback_url . '?token=' . $payment->token
