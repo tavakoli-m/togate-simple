@@ -81,7 +81,7 @@ class SettlementJob implements ShouldQueue
                         'amount' => (float)$payment->amount - (float)$payment->fee_amount,
                         'senderAddress' => $payment->wallet_address
                     ]);
-
+                    sleep(5);
                     $send_to_site = Http::post('http://127.0.0.1:3000/send-tron',[
                         'privateKey' => $payment->wallet_key,
                         'toAddress' => $site_wallet,
