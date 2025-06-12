@@ -8,7 +8,6 @@ use App\Jobs\MonitorPendingPayment;
 use App\Models\Payment\Gateway;
 use App\Models\Payment\Payment;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 
@@ -54,16 +53,15 @@ class RequestPaymentController extends Controller
 
         $gateWay = Gateway::whereApiKey($api_token)->first();
 
-        if($gateWay && $gateWay->status === 1 && $gateWay->user->status === 2)
-        {
-            try{
+        if ($gateWay && $gateWay->status === 1 && $gateWay->user->status === 2) {
+            try {
                 $wallet = Http::post('http://localhost:3000/create-wallet');
 
                 $trxPrice = Http::get('https://api.wallex.ir/v1/markets')->json('result')['symbols']['TRXTMN']['stats']['lastPrice'];
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 return response()->json([
                     'msg' => 'server is busy, try agin !!'
-                ],500);
+                ], 500);
             }
 
             $amount = $request->input('amount');
@@ -75,8 +73,7 @@ class RequestPaymentController extends Controller
             $payment_fee = $payment_amount * $fee;
 
             // Fee For Payer
-            if($gateWay->fee_method === 1)
-            {
+            if ($gateWay->fee_method === 1) {
                 $payment = Payment::create([
                     'gateway_id' => $gateWay->id,
                     'token' => str()->random(65),
@@ -89,9 +86,7 @@ class RequestPaymentController extends Controller
                     'callback_url' => $request->input('callback_url'),
                     'description' => $request->input('description')
                 ]);
-            }
-
-            else{
+            } else {
                 $payment = Payment::create([
                     'gateway_id' => $gateWay->id,
                     'token' => str()->random(65),
@@ -116,8 +111,6 @@ class RequestPaymentController extends Controller
 
         return response()->json([
             "msg" => 'api key not correct !!'
-        ],401);
-
-
+        ], 401);
     }
 }
