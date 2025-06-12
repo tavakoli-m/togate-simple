@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl" class="font-iran-sans">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>توگیت | درگاه پرداخت ارز دیجیتال</title>
   @Vite(['resources/fonts/iran-sans/fontiran.css', 'resources/css/app.css'])
 </head>
+
 <body class="bg-gray-50 text-right font-iran-sans">
 
   <!-- Navbar -->
@@ -13,14 +15,16 @@
     <div class="max-w-7xl mx-auto px-4 py-4 flex space-x-reverse items-center justify-between">
       <div class="text-2xl font-bold text-blue-700">togate.ir</div>
       <nav class="space-x-reverse space-x-6 text-sm text-blue-700">
-        <a href="#docs" class="hover:underline">مستندات</a>
+        <a href="/api/doc" class="hover:underline">مستندات</a>
         @guest
-        <a href="{{ route('auth.login.form') }}" class="hover:underline">ورود</a>
-        <a href="{{ route('auth.register.form') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">ثبت‌نام</a>
-        @endguest
+      <a href="{{ route('auth.login.form') }}" class="hover:underline">ورود</a>
+      <a href="{{ route('auth.register.form') }}"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">ثبت‌نام</a>
+    @endguest
         @auth
-        <a href="{{ route('dashboard.index') }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">حساب کاربری</a>
-        @endauth
+      <a href="{{ route('dashboard.index') }}"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-4">حساب کاربری</a>
+    @endauth
       </nav>
     </div>
   </header>
@@ -30,15 +34,18 @@
     <div class="md:w-1/2 space-y-6 text-center md:text-right">
       <h1 class="text-4xl font-extrabold text-blue-700 leading-tight">درگاه پرداخت ارز دیجیتال سریع، امن و مطمئن</h1>
       <p class="text-lg text-gray-700">
-        توگیت پلتفرمی برای دریافت و تسویه پرداخت‌های کریپتویی است؛ مناسب فروشگاه‌ها، فریلنسرها، استارتاپ‌ها و هر کسب‌وکاری که می‌خواهد بدون دغدغه رمزارز بپذیرد.
+        توگیت پلتفرمی برای دریافت و تسویه پرداخت‌های کریپتویی است؛ مناسب فروشگاه‌ها، فریلنسرها، استارتاپ‌ها و هر
+        کسب‌وکاری که می‌خواهد بدون دغدغه رمزارز بپذیرد.
       </p>
       <div class="space-x-reverse space-x-4">
-        <a href="{{ route('auth.register.form') }}" class="px-6 py-3 bg-blue-600 text-white rounded shadow hover:bg-blue-700">شروع کنید</a>
+        <a href="{{ route('auth.register.form') }}"
+          class="px-6 py-3 bg-blue-600 text-white rounded shadow hover:bg-blue-700">شروع کنید</a>
         <a href="#docs" class="px-6 py-3 border border-blue-600 text-blue-600 rounded hover:bg-blue-100">مستندات</a>
       </div>
     </div>
     <div class="md:w-1/2 mb-10 md:mb-0">
-      <img src="https://cdn-icons-png.flaticon.com/512/9068/9068676.png" alt="Crypto Gateway" class="w-full max-w-sm mx-auto">
+      <img src="https://cdn-icons-png.flaticon.com/512/9068/9068676.png" alt="Crypto Gateway"
+        class="w-full max-w-sm mx-auto">
     </div>
   </section>
 
@@ -85,7 +92,8 @@
       </div>
       <div>
         <h3 class="text-xl font-bold text-blue-700">تسویه‌ها به چه صورت انجام می‌شود؟</h3>
-        <p class="text-gray-600">تسویه ها با به صورت خودکار بعد از رسیدن مبلغ کیف پول به حداقل مقدار تایین شده توسط شما انجام خواهد شد</p>
+        <p class="text-gray-600">تسویه ها با به صورت خودکار بعد از رسیدن مبلغ کیف پول به حداقل مقدار تایین شده توسط شما
+          انجام خواهد شد</p>
       </div>
     </div>
   </section>
@@ -97,4 +105,5 @@
   </footer>
 
 </body>
+
 </html>
