@@ -35,9 +35,10 @@ class TronService
 
     public function getTrxBalance(string $address): float
     {
-        $balanceInSun = $this->tron->getBalance($address, true);
+        $this->tron->setAddress($address);
+        $balance = $this->tron->getBalance(null, true);
 
-        return $balanceInSun / 1000000;
+        return $balance;
     }
 
     public function sendTrx(string $privateKey, string $toAddress, float $amount, string $from): array

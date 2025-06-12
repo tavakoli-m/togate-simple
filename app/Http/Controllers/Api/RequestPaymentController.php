@@ -7,6 +7,7 @@ use App\Http\Requests\Api\RequestPaymentRequest;
 use App\Jobs\MonitorPendingPayment;
 use App\Models\Payment\Gateway;
 use App\Models\Payment\Payment;
+use App\Services\TronService;
 use Exception;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -48,7 +49,7 @@ class RequestPaymentController extends Controller
      *      )
      * )
      */
-    public function __invoke(RequestPaymentRequest $request)
+    public function __invoke(RequestPaymentRequest $request, TronService $tronService)
     {
         $api_token = $request->input('api_key');
 
@@ -56,7 +57,7 @@ class RequestPaymentController extends Controller
 
         if ($gateWay && $gateWay->status === 1 && $gateWay->user->status === 2) {
             try {
-                $wallet = Http::post('http://localhost:3000/create-wallet');
+                $wallet = $tronService->createWallet();
 
                 $trxPrice = Http::get('https://api.wallex.ir/v1/markets')->json('result')['symbols']['TRXTMN']['stats']['lastPrice'];
             } catch (Exception $e) {
@@ -82,8 +83,8 @@ class RequestPaymentController extends Controller
                     'amount' => (float)$payment_amount + (float)$payment_fee,
                     'fee_amount' => $payment_fee,
                     'expired_at' => now()->addMinutes(15),
-                    'wallet_key' => $wallet->json('privateKey'),
-                    'wallet_address' => $wallet->json('address'),
+                    'wallet_key' => $wallet['private_key'],
+                    'wallet_address' => $wallet['public_address'],
                     'callback_url' => $request->input('callback_url'),
                     'description' => $request->input('description')
                 ]);
@@ -95,8 +96,8 @@ class RequestPaymentController extends Controller
                     'amount' => (float)$payment_amount,
                     'fee_amount' => $payment_fee,
                     'expired_at' => now()->addMinutes(15),
-                    'wallet_key' => $wallet->json('privateKey'),
-                    'wallet_address' => $wallet->json('address'),
+                    'wallet_key' => $wallet['private_key'],
+                    'wallet_address' => $wallet['public_address'],
                     'callback_url' => $request->input('callback_url'),
                     'description' => $request->input('description')
                 ]);

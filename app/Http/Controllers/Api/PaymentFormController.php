@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Jobs\SettlementJob;
 use App\Models\Payment\Payment;
+use App\Services\TronService;
 use Illuminate\Support\Facades\Http;
 
 /**
@@ -44,7 +45,7 @@ class PaymentFormController extends Controller
         return view('payment.start', compact('payment'));
     }
 
-    public function check(Payment $payment)
+    public function check(Payment $payment, TronService $tronService)
     {
         if ($payment->expired_at < now() || $payment->status !== 1) {
             return response()->json([
@@ -52,9 +53,10 @@ class PaymentFormController extends Controller
             ]);
         }
 
-        $wallet = Http::get('http://localhost:3000/check-balance/' . $payment->wallet_address);
+        // $wallet = Http::get('http://localhost:3000/check-balance/' . $payment->wallet_address);
+        $wallet = $tronService->getTrxBalance($payment->wallet_address);
 
-        if ($wallet->json('balance') >= $payment->amount) {
+        if ($wallet >= $payment->amount) {
 
             $payment->update([
                 'status' => 4
