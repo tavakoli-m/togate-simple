@@ -36,7 +36,7 @@ class PaymentFormController extends Controller
      */
     public function start(Payment $payment)
     {
-        if ($payment->expired_at < now() || $payment->status !== 1) {
+        if ($payment->expired_at < now() || $payment->status == 1) {
             return response()->json([
                 'msg' => 'payment not found !!'
             ]);
