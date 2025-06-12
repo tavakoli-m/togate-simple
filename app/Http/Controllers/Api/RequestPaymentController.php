@@ -55,6 +55,14 @@ class RequestPaymentController extends Controller
 
         $gateWay = Gateway::whereApiKey($api_token)->first();
 
+        if ($gateWay->allowed_ips !== [""]) {
+            if (!in_array($request->ip(), $gateWay->allowed_ips)) {
+                return response()->json([
+                    "msg" => 'Your ip not set for this gateway'
+                ], 403);
+            }
+        }
+
         if ($gateWay && $gateWay->status === 1 && $gateWay->user->status === 2) {
             try {
                 $wallet = $tronService->createWallet();
