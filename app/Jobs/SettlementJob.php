@@ -7,6 +7,7 @@ use App\Models\Payment\Settlement;
 use Exception;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
@@ -19,8 +20,7 @@ class SettlementJob implements ShouldQueue
      */
     public function __construct(
         public Gateway $gateway
-    )
-    {
+    ) {
         //
     }
 
@@ -29,13 +29,13 @@ class SettlementJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $payments = $this->gateway->payments()->where('status',4)->get();
+        $payments = $this->gateway->payments()->where('status', 4)->get();
         $gateway = $this->gateway;
 
-        $site_wallet = 'TJUcSwY37FyY3vB1UkSKcsbkZytTUh3Yx8';
+        $site_wallet = Config::get('payment.site_tron_wallet');
 
-        foreach($payments as $payment){
-            try{
+        foreach ($payments as $payment) {
+            try {
                 DB::beginTransaction();
 
                 $payment->update([
@@ -43,16 +43,15 @@ class SettlementJob implements ShouldQueue
                 ]);
 
                 // Payer
-                if($payment->fee_method === 1)
-                {
-                    $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron',[
+                if ($payment->fee_method === 1) {
+                    $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron', [
                         'privateKey' => $payment->wallet_key,
                         'toAddress' => $gateway->settlement_address,
                         'amount' => (float)$payment->amount - (float)$payment->fee_amount,
                         'senderAddress' => $payment->wallet_address
                     ]);
 
-                    $send_to_site = Http::post('http://127.0.0.1:3000/send-tron',[
+                    $send_to_site = Http::post('http://127.0.0.1:3000/send-tron', [
                         'privateKey' => $payment->wallet_key,
                         'toAddress' => $site_wallet,
                         'amount' => $payment->fee_amount,
@@ -74,15 +73,15 @@ class SettlementJob implements ShouldQueue
                     ]);
                 }
                 // Ricever
-                else{
-                    $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron',[
+                else {
+                    $send_to_customer = Http::post('http://127.0.0.1:3000/send-tron', [
                         'privateKey' => $payment->wallet_key,
                         'toAddress' => $gateway->settlement_address,
                         'amount' => (float)$payment->amount - (float)$payment->fee_amount,
                         'senderAddress' => $payment->wallet_address
                     ]);
                     sleep(5);
-                    $send_to_site = Http::post('http://127.0.0.1:3000/send-tron',[
+                    $send_to_site = Http::post('http://127.0.0.1:3000/send-tron', [
                         'privateKey' => $payment->wallet_key,
                         'toAddress' => $site_wallet,
                         'amount' => $payment->fee_amount,
@@ -111,10 +110,8 @@ class SettlementJob implements ShouldQueue
 
 
                 DB::commit();
-
-            }
-            catch(Exception $e){
-               DB::rollBack();
+            } catch (Exception $e) {
+                DB::rollBack();
             }
         }
     }

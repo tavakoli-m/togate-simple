@@ -8,6 +8,7 @@ use App\Jobs\MonitorPendingPayment;
 use App\Models\Payment\Gateway;
 use App\Models\Payment\Payment;
 use Exception;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 
 
@@ -68,7 +69,7 @@ class RequestPaymentController extends Controller
 
             $payment_amount =  $amount / $trxPrice;
 
-            $fee = 0.5;
+            $fee = Config::get('payment.fee');
 
             $payment_fee = $payment_amount * $fee;
 
