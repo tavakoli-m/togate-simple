@@ -111,7 +111,7 @@ class RequestPaymentController extends Controller
                 ]);
             }
 
-            MonitorPendingPayment::dispatch($payment)->delay(now()->addMinutes(15));
+            MonitorPendingPayment::dispatch($payment)->delay(now()->addMinutes(15.5));
 
             return response()->json([
                 'success' => true,
